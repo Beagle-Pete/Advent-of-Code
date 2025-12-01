@@ -65,34 +65,29 @@ fn stops_at_zero_count(start_pos: &i32, dial_clicks: &Vec<i32>) -> i32 {
 
     for dial_click in dial_clicks {
 
-        let new_pos = pos + dial_click;
-        let mut rem = 0;
+        let mut new_pos = pos + dial_click;
+        let rem = new_pos % 100;
 
-        if new_pos < 0 {            
-            rem = (dial_click+pos)%100;
-            pos = 100 - rem.abs();
-
+        if new_pos < 0 {
+            new_pos = 100 + rem;
         } else if new_pos > 100 {
-            rem = new_pos%100;
-            pos = rem.abs();
-
-        } else {
-            pos = pos + dial_click%100;
+            new_pos = rem;
         }
         
-        if pos == 100 {
-            pos = 0;
+        if new_pos == 100 {
+            new_pos = 0;
         }
 
-        if pos == 0 {
+        if new_pos == 0 {
             zero_count += 1;
         }
 
-        // Panic if a value is <0 or >100
-        if pos < 0 || pos > 99 {
+        // Panic if a new position is <0 or >100
+        if new_pos < 0 || new_pos > 99 {
             panic!("Pos: {} -> Dial Clicks {} -> New Pos: {}", pos, dial_click, new_pos);
         }
 
+        pos = new_pos;
         final_val.push(pos);
     }
 
