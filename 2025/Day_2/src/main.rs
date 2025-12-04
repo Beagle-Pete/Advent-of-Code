@@ -59,7 +59,7 @@ fn get_invalid_ids(input_file: &Vec<Range>) -> u64 {
         let ids = input.start..=input.end;
 
         for id in ids {
-            let invalid_id = test_for_pattern(id);
+            let invalid_id = test_for_pattern2(id);
 
             match invalid_id {
                 Some(id) => invalid_ids.push(id.to_string()),
@@ -80,7 +80,6 @@ fn get_invalid_ids(input_file: &Vec<Range>) -> u64 {
 
 fn test_for_pattern(id: u64) -> Option<u64> {
     let id_str = id.to_string();
-    println!("{}", id_str);
 
     // If id has odd number of digits continue
     if id_str.len() % 2 == 1 {
@@ -97,4 +96,40 @@ fn test_for_pattern(id: u64) -> Option<u64> {
     }
 
     Some(id)
+}
+
+fn test_for_pattern2(id: u64) -> Option<u64> {
+    let id_str = id.to_string();
+
+    for div in 2..=id_str.len() {
+
+        // If not divisible continue
+        if id_str.len() % div != 0 {
+            continue
+        }        
+        
+        let mut parts = vec![];
+        for ii in 1..=div {
+            let ind_start = (ii-1) * (id_str.len()/div);
+            let ind_end = (ii) * (id_str.len()/div);
+            let part = &id_str[ind_start..ind_end];
+            parts.push(part);
+        }
+        
+        let mut pattern_match_found = true;
+        for ii in 0..parts.len()-1 {
+            if parts[ii] != parts[ii+1] {                
+                pattern_match_found = false;
+                break
+            }
+        }
+
+        if !pattern_match_found {
+            continue
+        }
+
+        return Some(id);
+    }
+
+    None
 }
