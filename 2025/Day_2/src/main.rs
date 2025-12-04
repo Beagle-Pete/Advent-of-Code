@@ -9,37 +9,7 @@ fn main() {
 
     let input_file = parse_input(input_file_path).unwrap();
 
-    let mut invalid_ids: Vec<String> = vec!{};
-
-    for input in &input_file {
-        let ids = input.start..=input.end;
-
-        for id in ids {
-            let id = id.to_string();
-
-            // If id has odd number of digits continue
-            if id.len() % 2 == 1 {
-                continue
-            }
-
-            let ind_halve = id.len() / 2;
-
-            let part1 = &id[0..=ind_halve-1];
-            let part2 = &id[ind_halve..];
-            
-            if part1==part2 {
-                invalid_ids.push(id);
-            }
-        }
-    }
-
-    // Sum of invalid IDs
-    let mut sum = 0;
-    for id in &invalid_ids {
-        let id = id.parse::<u64>().unwrap();
-        sum += id;
-    }
-    
+    let sum = get_invalid_ids(&input_file);    
     println!("Sum of invalid IDs: {:#?}", sum);
 
 }
@@ -79,4 +49,40 @@ fn parse_input(file_path: String) -> Result<Vec<Range>, Box<dyn error::Error>> {
         .collect();
 
     Ok(input)
+}
+
+fn get_invalid_ids(input_file: &Vec<Range>) -> u64 {
+
+    let mut invalid_ids: Vec<String> = vec!{};
+
+    for input in input_file {
+        let ids = input.start..=input.end;
+
+        for id in ids {
+            let id = id.to_string();
+
+            // If id has odd number of digits continue
+            if id.len() % 2 == 1 {
+                continue
+            }
+
+            let ind_halve = id.len() / 2;
+
+            let part1 = &id[0..=ind_halve-1];
+            let part2 = &id[ind_halve..];
+            
+            if part1==part2 {
+                invalid_ids.push(id);
+            }
+        }
+    }
+
+    // Sum of invalid IDs
+    let mut sum = 0;
+    for id in &invalid_ids {
+        let id = id.parse::<u64>().unwrap();
+        sum += id;
+    }
+
+    sum
 }
