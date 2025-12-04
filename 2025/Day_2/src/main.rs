@@ -59,20 +59,11 @@ fn get_invalid_ids(input_file: &Vec<Range>) -> u64 {
         let ids = input.start..=input.end;
 
         for id in ids {
-            let id = id.to_string();
+            let invalid_id = test_for_pattern(id);
 
-            // If id has odd number of digits continue
-            if id.len() % 2 == 1 {
-                continue
-            }
-
-            let ind_halve = id.len() / 2;
-
-            let part1 = &id[0..=ind_halve-1];
-            let part2 = &id[ind_halve..];
-            
-            if part1==part2 {
-                invalid_ids.push(id);
+            match invalid_id {
+                Some(id) => invalid_ids.push(id.to_string()),
+                None => continue
             }
         }
     }
@@ -85,4 +76,25 @@ fn get_invalid_ids(input_file: &Vec<Range>) -> u64 {
     }
 
     sum
+}
+
+fn test_for_pattern(id: u64) -> Option<u64> {
+    let id_str = id.to_string();
+    println!("{}", id_str);
+
+    // If id has odd number of digits continue
+    if id_str.len() % 2 == 1 {
+        return None;
+    }
+
+    let ind_halve = id_str.len() / 2;
+
+    let part1 = &id_str[0..=ind_halve-1];
+    let part2 = &id_str[ind_halve..];
+    
+    if part1!=part2 {
+        return None;
+    }
+
+    Some(id)
 }
