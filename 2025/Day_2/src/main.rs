@@ -221,4 +221,24 @@ mod tests {
         assert_eq!(range10.1, ["824824824"]);
         assert_eq!(range11.1, ["2121212121"]);
     }
+
+    #[test]
+    fn sum_of_test_input_part_1() {
+        let input_file_path = "data/test_input.txt".to_owned();
+        let input_file = parse_input(input_file_path).unwrap();
+
+        let ranges_part1 = RangeCollection::new(input_file.clone());
+        let sum = ranges_part1.get_invalid_ids(Part::Part1);
+        assert_eq!(sum, 1227775554);
+    }
+
+    #[test]
+    fn sum_of_test_input_part_2() {
+        let input_file_path = "data/test_input.txt".to_owned();
+        let input_file = parse_input(input_file_path).unwrap();
+
+        let ranges_part1 = RangeCollection::new(input_file.clone());
+        let sum = ranges_part1.get_invalid_ids(Part::Part2);
+        assert_eq!(sum, 4174379265);
+    }
 }
