@@ -11,8 +11,8 @@ fn main() {
 
     let ranges_part1 = RangeCollection::new(input_file.clone());
     let ranges_part2 = RangeCollection::new(input_file.clone());
-    println!("{}", ranges_part1.get_invalid_ids(Part::Part1));
-    println!("{}", ranges_part2.get_invalid_ids(Part::Part2));
+    println!("Part 1 Solution: sum = {}", ranges_part1.get_invalid_ids(Part::Part1));
+    println!("Part 2 Solution: sum = {}", ranges_part2.get_invalid_ids(Part::Part2));
 }
 
 enum Part {
