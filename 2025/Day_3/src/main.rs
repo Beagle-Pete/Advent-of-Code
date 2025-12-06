@@ -13,7 +13,7 @@ impl Bank {
         }
     }
 
-    fn get_largest_joltage(&self) -> u32 {
+    fn get_largest_joltage(&self, digits:u32) -> u32 {
         // Find largest digit. Seach from beginning to end-1
         let mut largest_first_digit_ind = 0;
         let mut largest_first_digit = self.batteries.chars().nth(largest_first_digit_ind).unwrap().to_digit(10).unwrap();
@@ -63,11 +63,11 @@ impl BankCollection {
         }
     }
 
-    fn get_joltage_sum(self) -> u32 {
+    fn get_joltage_sum(self, digits: u32) -> u32 {
 
         let mut sum = 0;
         for bank in &self.banks {
-            sum += bank.get_largest_joltage();
+            sum += bank.get_largest_joltage(digits);
         }
 
         sum
@@ -82,7 +82,7 @@ fn main() {
     let bank_collection = parse_input_file(input_file).unwrap();
     let bank_collection = BankCollection::new(bank_collection);
 
-    let sum = &bank_collection.get_joltage_sum();
+    let sum = &bank_collection.get_joltage_sum(2);
     println!("Part 1 Solution: sum = {}", sum);
 }
 
@@ -100,26 +100,31 @@ fn parse_input_file(file_path: String) -> Result<Vec<Bank>, Box<dyn error::Error
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_bank_largest_joltage() {
-        let bank1 = Bank::new("987654321111111".to_owned());
-        let bank2 = Bank::new("811111111111119".to_owned());
-        let bank3 = Bank::new("234234234234278".to_owned());
-        let bank4 = Bank::new("818181911112111".to_owned());
+    mod part_1 {
+        use super::*;
 
-        assert_eq!(bank1.get_largest_joltage(), 98);
-        assert_eq!(bank2.get_largest_joltage(), 89);
-        assert_eq!(bank3.get_largest_joltage(), 78);
-        assert_eq!(bank4.get_largest_joltage(), 92);
-    }
+        #[test]
+        fn test_bank_largest_joltage() {
+            let bank1 = Bank::new("987654321111111".to_owned());
+            let bank2 = Bank::new("811111111111119".to_owned());
+            let bank3 = Bank::new("234234234234278".to_owned());
+            let bank4 = Bank::new("818181911112111".to_owned());
 
-    #[test]
-    fn test_joltage_sum() {
+            assert_eq!(bank1.get_largest_joltage(2), 98);
+            assert_eq!(bank2.get_largest_joltage(2), 89);
+            assert_eq!(bank3.get_largest_joltage(2), 78);
+            assert_eq!(bank4.get_largest_joltage(2), 92);
+        }
 
-        let input_file = "data/test_input.txt".to_owned();
-        let bank_collection = parse_input_file(input_file).unwrap();
-        let bank_collection = BankCollection::new(bank_collection);
+        #[test]
+        fn test_joltage_sum() {
 
-        assert_eq!(bank_collection.get_joltage_sum(), 357);
+            let input_file = "data/test_input.txt".to_owned();
+            let bank_collection = parse_input_file(input_file).unwrap();
+            let bank_collection = BankCollection::new(bank_collection);
+            let digits = 2;
+
+            assert_eq!(bank_collection.get_joltage_sum(digits), 357);
+        }
     }
 }
