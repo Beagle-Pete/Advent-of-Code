@@ -13,9 +13,41 @@ impl Bank {
         }
     }
 
-    fn get_largest_joltage(&self) -> u64 {
+    fn get_largest_joltage(&self) -> u32 {
+        // Find largest digit. Seach from beginning to end-1
+        let mut largest_first_digit_ind = 0;
+        let mut largest_first_digit = self.batteries.chars().nth(largest_first_digit_ind).unwrap().to_digit(10).unwrap();
+        for ii in 0..self.batteries.chars().count()-1 {
+            let jolt = self.batteries.chars().nth(ii).unwrap().to_digit(10).unwrap();
 
-        0
+            if jolt > largest_first_digit {
+                largest_first_digit = jolt;
+                largest_first_digit_ind = ii;
+            }
+
+            // ToDo: If 9 is found then return early
+            // println!("First Digit Search: {}", jolt);
+        }
+
+        // Search for second largest digit. Search from (largest first digit + 1) to end
+        let largest_second_digit_ind = largest_first_digit_ind+1;
+        let mut largest_second_digit = self.batteries.chars().nth(largest_second_digit_ind).unwrap().to_digit(10).unwrap();
+        for ii in largest_second_digit_ind..self.batteries.chars().count() {
+            let jolt = self.batteries.chars().nth(ii).unwrap().to_digit(10).unwrap();
+
+            if jolt > largest_second_digit {
+                largest_second_digit = jolt;
+            }
+            // println!("Second Digit Seach: {}", jolt);
+        }
+
+        let greatest_joltage = format!("{}{}", largest_first_digit, largest_second_digit)
+            .parse::<u32>()
+            .unwrap();
+
+        // println!("Largest joltage: {} jolts", greatest_joltage);
+
+        greatest_joltage
     }
 }
 
@@ -31,20 +63,26 @@ impl BankCollection {
         }
     }
 
-    fn get_joltage_sum(self) -> u64 {
+    fn get_joltage_sum(self) -> u32 {
 
-        0
+        let mut sum = 0;
+        for bank in &self.banks {
+            sum += bank.get_largest_joltage();
+        }
+
+        sum
     }
 }
 
 fn main() {
-    println!("Hello, world!");
+    println!("Advent of Code (2025) - Day 3 (12/3)");
 
     let input_file = "data/test_input.txt".to_owned();
     let bank_collection = parse_input_file(input_file).unwrap();
     let bank_collection = BankCollection::new(bank_collection);
 
-    println!("{:?}", bank_collection);
+    let sum = &bank_collection.get_joltage_sum();
+    println!("Part 1 Solution: sum = {}", sum);
 }
 
 fn parse_input_file(file_path: String) -> Result<Vec<Bank>, Box<dyn error::Error>> {
