@@ -77,7 +77,8 @@ impl BankCollection {
 fn main() {
     println!("Advent of Code (2025) - Day 3 (12/3)");
 
-    let input_file = "data/test_input.txt".to_owned();
+    // let input_file = "data/test_input.txt".to_owned();
+    let input_file = "data/puzzle_input.txt".to_owned();
     let bank_collection = parse_input_file(input_file).unwrap();
     let bank_collection = BankCollection::new(bank_collection);
 
