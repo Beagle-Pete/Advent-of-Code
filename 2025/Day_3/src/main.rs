@@ -14,6 +14,7 @@ impl Bank {
     }
 
     fn get_largest_joltage(&self, digits: usize) -> u64 {
+        // todo - panic if digits is larger than length of battery bank
         let bank_size = self.batteries.chars().count();
 
         let mut largest_digits = "".to_owned();
@@ -31,8 +32,8 @@ impl Bank {
                     prev_largest_digit_ind = jj;
                 }
             }
-            // ToDo: If 9 is found then return early
-            // ToDo: If remaining index to search is equal to digits left then return remaining string and return early
+            // todo: If 9 is found then return early
+            // todo: If remaining index to search is equal to digits left then return remaining string and return early
 
             largest_digits = format!("{}{}", largest_digits, prev_largest_digit);
 
