@@ -14,7 +14,7 @@ impl Grid {
     }
 
     fn converge(&self) -> (u64, Vec<u64>, Vec<Vec<Vec<char>>>) {
-        let mut grid_history = vec![]; // Vec<Vec<Vec<char>>>;
+        let mut grid_history = vec![];
         let mut accessible_rolls_history = vec![];
 
         let (accessible_rolls, new_grid) = self.get_accessible_rolls();
@@ -138,8 +138,6 @@ fn main() {
     let input_file = "data/puzzle_input.txt".to_owned();
     let grid = parse_input_file(input_file).unwrap();
     let (accessible_rolls, _new_grid) = grid.get_accessible_rolls();
-
-    // Example of how to re-consume answer and converge on final solution. Build on this
     let (total_sum, _accessible_rolls2, _new_grid2) = grid.converge();
 
     println!("Part 1 Solution: Can remove {} rolls of paper", accessible_rolls);
