@@ -79,6 +79,10 @@ impl Grid {
                     }
                 });
 
+                if pos5 == 'x' {
+                    new_grid[ii][jj] = '.';
+                }
+
                 if pos5 == '@' && sum < 4 {
                     accessible_rolls += 1;
                     new_grid[ii][jj] = 'x';
@@ -96,12 +100,16 @@ impl Grid {
 fn main() {
     println!("Advent of Code (2025) - Day 4 (12/4): Printing Department\n");
 
-    // let input_file = "data/test_input.txt".to_owned();
-    let input_file = "data/puzzle_input.txt".to_owned();
+    let input_file = "data/test_input.txt".to_owned();
+    // let input_file = "data/puzzle_input.txt".to_owned();
     let grid = parse_input_file(input_file).unwrap();
-    let (accessible_rolls, _new_grid) = grid.get_accessible_rolls();
+    let (accessible_rolls, new_grid) = grid.get_accessible_rolls();
 
-    println!("Part 1 Solution: sum = {}", accessible_rolls);
+    // Example of how to re-consume answer and converge on final solution. Build on this
+    let grid2 = Grid::new(new_grid);
+    let (accessible_rolls2, new_grid2) = grid2.get_accessible_rolls();
+
+    println!("Part 1 Solution: Can remove {} rolls of paper", accessible_rolls);
 
 }
 
