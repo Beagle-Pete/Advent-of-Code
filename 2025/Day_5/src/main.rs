@@ -1,14 +1,13 @@
 use std::fs;
 use std::error;
-use std::collections::HashMap;
 
 struct Ingredients {
-    fresh: HashMap<u64, bool>,
+    fresh: Vec<(u64, u64)>,
     available: Vec<u64>,
 }
 
 impl Ingredients {
-    fn new(fresh: HashMap<u64, bool>, available: Vec<u64>) -> Self {
+    fn new(fresh: Vec<(u64, u64)>, available: Vec<u64>) -> Self {
         Self {
             fresh,
             available,
@@ -19,15 +18,15 @@ impl Ingredients {
 
         let mut sum = 0;
 
-        for n in &self.available {
-            let tt = self.fresh.get(n);
+        for ingredient in &self.available {
+            for fresh_ingredient in &self.fresh {
 
-            match self.fresh.get(n) {
-                Some(_) => sum +=1,
-                None => ()
+                if ingredient > &fresh_ingredient.0 && ingredient < &fresh_ingredient.1 {
+                    sum += 1;
+                    break;
+                }
+                // println!("{} -> {}", fresh_ingredient.0, fresh_ingredient.1);
             }
-
-            // println!("{n}");
         }
         
         sum
@@ -45,6 +44,8 @@ fn main() {
     let sum = ingredients.fresh_count();
 
     println!("Part 1 Solution: {} of the available ingredients are fresh", sum);
+
+    // println!("{:?}", ingredients.fresh)
 }
 
 
@@ -54,11 +55,9 @@ fn parse_input_file(path: String) -> Result<Ingredients, Box<dyn error::Error>> 
     let input: Vec<String> = input.split("\n\n")
         .map(|el| el.to_string())
         .collect();
-
-    let mut fresh_map: HashMap<u64, bool> = HashMap::new();
     
-    input[0].split("\n")
-        .for_each(|line| {
+    let fresh = input[0].split("\n")
+        .map(|line| {
             let mut fresh_range = line.split("-");
 
             let range_start = fresh_range.next()
@@ -71,16 +70,15 @@ fn parse_input_file(path: String) -> Result<Ingredients, Box<dyn error::Error>> 
                 .parse::<u64>()
                 .unwrap();
 
-            for k in range_start..=range_end {
-                fresh_map.insert(k, true);
-            }
-        });
+            (range_start, range_end)
+        })
+        .collect();
 
     let available_ingredients: Vec<u64> = input[1].split("\n")
         .map(|el| el.parse::<u64>().unwrap())
         .collect();
 
-    Ok(Ingredients::new(fresh_map, available_ingredients))
+    Ok(Ingredients::new(fresh, available_ingredients))
 
     
 }
